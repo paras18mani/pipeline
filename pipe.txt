@@ -1,63 +1,45 @@
-pipeline 
-{
-    agent any
-    stages
-    {
-      
-      
-      stages('One') 
-      {
-       steps { echo 'Hi this is paras' }
-      }
-        
-        
-        
-        stage('Two')
-        {
-        steps {input( 'Do you want to proceed' )}
-        }
-             
-        
-        stage('Three')
-         {
-           when {
-                 not { branch "master" }
-                }
-                               
-          steps
-          {
-          echo "hello"
-          }
-       }
-                        
-                        
-       stage('four')
-       {
-            parallel
-            {
-               stage('Unit Test')
-               {
-                    steps{ echo "Running the unit test...." }
-               }
-                                          
-               stage('Integration test')
-               {
-                    agent
-                    {
-                       docker
-                        {
-                          reuseNode  false
-                          image 'ubuntu'
-                        }
-                     }
-                }
-                                                    
-                 step
-                 { echo 'Running the integration testr...'}
-                 
-          }
-        }
-     }
-  }
+pipeline{
+agent any
+ stages{
+ stage('one'){
+ steps{
+ echo 'hi,this is prakhar parekar'
+ }
+ }
+ stage('two')
+ {
+ steps{
+ input('Do you want to proceed?')
+ }
+ }
+ stage('Three'){
+ when{
+ not{
+ branch "master"
+ }
+ }
+ steps{
+ echo "Hello"
+ }
+ }
+ stage('four'){
+ parallel{
+ stage('Unit Test'){
+ steps{
+ echo "running the unit test"
+ }
+ }
+ stage('integration test'){
+ agent{
+ docker{
+ reuseNode false
+ image 'ubantu'
 }
-                                            
+}
+steps{
+echo 'running the integration test..'
+}
+}}
+}
+}
+}
